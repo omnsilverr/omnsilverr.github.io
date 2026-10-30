@@ -1,0 +1,33 @@
+---
+import { boards, boardLink } from '../config/boards';
+import { isUncategorized, type Post } from '../lib/posts';
+interface Props { posts: Post[]; }
+const { posts } = Astro.props;
+const studyBoards = boards.filter(b => b.group === 'study');
+const journalBoards = boards.filter(b => b.group === 'journal');
+const count = (id: string) => posts.filter(p => p.data.category === id).length;
+const unclassified = posts.filter(isUncategorized).length;
+---
+<aside class="sidebar" aria-label="카테고리">
+  <h2>카테고리</h2>
+  <a class="sidebar-total" href="/">전체 글 <span>{posts.length}</span></a>
+
+  <div class="sidebar-group">
+    <a class="sidebar-group-title" href="/study/">전공 공부</a>
+    {studyBoards.map(board => (
+      <a class="sidebar-board" href={boardLink(board.id)}>{board.name}<span>{count(board.id)}</span></a>
+    ))}
+  </div>
+
+  <div class="sidebar-group">
+    <a class="sidebar-group-title" href="/etc/">etc.</a>
+    {journalBoards.map(board => (
+      <a class="sidebar-board" href={boardLink(board.id)}>{board.name}<span>{count(board.id)}</span></a>
+    ))}
+  </div>
+  {unclassified > 0 && (
+    <div class="sidebar-group">
+      <a class="sidebar-board" href="/board/uncategorized/">미분류 <span>{unclassified}</span></a>
+    </div>
+  )}
+</aside>

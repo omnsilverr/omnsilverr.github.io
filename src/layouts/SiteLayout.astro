@@ -1,0 +1,41 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Sidebar from '../components/Sidebar.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { getPosts } from '../lib/posts';
+interface Props {
+  title?: string;
+  description?: string;
+  active?: 'all' | 'study' | 'etc.' | 'about';
+}
+const {
+  title = SITE_TITLE,
+  description = SITE_DESCRIPTION,
+  active = 'all',
+} = Astro.props;
+const posts = await getPosts();
+---
+<!doctype html>
+<html lang="ko">
+  <head>
+    <BaseHead title={title === SITE_TITLE ? title : `${title} | ${SITE_TITLE}`} description={description} />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="/" class="site-name">{SITE_TITLE}</a>
+        <nav class="top-nav" aria-label="주 메뉴">
+          <a href="/" aria-current={active === 'all' ? 'page' : undefined}>전체 글</a>
+          <a href="/study/" aria-current={active === 'study' ? 'page' : undefined}>STUDY</a>
+          <a href="/etc/" aria-current={active === 'etc.' ? 'page' : undefined}>ETC.</a>
+          <a href="/about/" aria-current={active === 'about' ? 'page' : undefined}>about</a>
+        </nav>
+      </div>
+    </header>
+    <div class="site-container">
+      <main class="main-content"><slot /></main>
+      <Sidebar posts={posts} />
+    </div>
+    <footer class="site-footer">© {new Date().getFullYear()} {SITE_TITLE}</footer>
+  </body>
+</html>

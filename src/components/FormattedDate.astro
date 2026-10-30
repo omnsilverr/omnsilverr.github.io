@@ -1,15 +1,5 @@
 ---
-interface Props {
-	date: Date;
-}
-
+interface Props { date: Date; }
 const { date } = Astro.props;
 ---
-
-<time datetime={date.toISOString()}>
-	{date.toLocaleDateString('en-us', {
-		year: 'numeric',
-		month: 'short',
-		day: 'numeric',
-	})}
-</time>
+<time datetime={date.toISOString()}>{date.toLocaleDateString('ko-KR', { timeZone: 'UTC', year: 'numeric', month: '2-digit', day: '2-digit' })}</time>

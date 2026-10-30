@@ -1,0 +1,20 @@
+---
+import type { GetStaticPaths } from 'astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { boards, type Board } from '../../config/boards';
+import { getPosts, isUncategorized } from '../../lib/posts';
+
+export const getStaticPaths = (() => [
+  ...boards.map(board => ({ params: { slug: board.id }, props: { board } })),
+  { params: { slug: 'uncategorized' }, props: { board: null } },
+]) satisfies GetStaticPaths;
+
+const { board } = Astro.props as { board: Board | null };
+const posts = (await getPosts()).filter(p => board ? p.data.category === board.id : isUncategorized(p));
+const title = board?.name ?? '미분류';
+---
+<SiteLayout title={title} active={board?.group === 'study' ? 'study' : board?.group === 'journal' ? 'journal' : 'all'}>
+  <div class="page-heading"><h1>{title}</h1><span>{posts.length}개의 글</span></div>
+  <PostList posts={posts} />
+</SiteLayout>
