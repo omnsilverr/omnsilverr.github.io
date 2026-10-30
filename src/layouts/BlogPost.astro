@@ -9,7 +9,7 @@ type Props = CollectionEntry<'blog'>['data'];
 const { title, description, pubDate, updatedDate, heroImage, category } = Astro.props;
 const board = getBoard(category);
 ---
-<SiteLayout title={title} description={description} active={board?.group === 'study' ? 'study' : board?.group === 'journal' ? 'journal' : 'all'}>
+<SiteLayout title={title} description={description} active={board?.group === 'study' ? 'study' : board?.group === 'etc.' ? 'etc.' : 'all'}>
   <article class="article-view">
     <div class="article-header">
       <div class="article-meta">

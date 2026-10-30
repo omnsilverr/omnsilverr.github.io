@@ -87,3 +87,8 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   .main-content { padding: 22px 20px 34px; min-height: 300px; width: 100%; }
   .sidebar { width: 100%; }
 }
+
+/* 두 단계 게시판 메뉴 */
+.sidebar-group-title[aria-current="page"],
+.sidebar-subboard[aria-current="page"] { color: var(--accent); font-weight: 700; }
+.sidebar-subboard { padding-left: 22px; font-size: 13px; }

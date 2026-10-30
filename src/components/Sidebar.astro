@@ -1,30 +1,31 @@
 ---
-import { boards, boardLink } from '../config/boards';
-import { isUncategorized, type Post } from '../lib/posts';
+import { boards, boardLink, getChildren, type Board } from '../config/boards';
+import { isInBoard, isUncategorized, type Post } from '../lib/posts';
+
 interface Props { posts: Post[]; }
 const { posts } = Astro.props;
-const studyBoards = boards.filter(b => b.group === 'study');
-const journalBoards = boards.filter(b => b.group === 'journal');
-const count = (id: string) => posts.filter(p => p.data.category === id).length;
+const rootBoards = boards.filter(board => !board.parentId);
+const count = (board: Board) => posts.filter(post => isInBoard(post, board)).length;
 const unclassified = posts.filter(isUncategorized).length;
+const currentPath = Astro.url.pathname;
 ---
 <aside class="sidebar" aria-label="카테고리">
   <h2>카테고리</h2>
   <a class="sidebar-total" href="/">전체 글 <span>{posts.length}</span></a>
 
-  <div class="sidebar-group">
-    <a class="sidebar-group-title" href="/study/">전공 공부</a>
-    {studyBoards.map(board => (
-      <a class="sidebar-board" href={boardLink(board.id)}>{board.name}<span>{count(board.id)}</span></a>
-    ))}
-  </div>
+  {rootBoards.map(parent => (
+    <div class="sidebar-group">
+      <a class="sidebar-group-title" href={boardLink(parent.id)} aria-current={currentPath === boardLink(parent.id) ? 'page' : undefined}>
+        {parent.name}<span>{count(parent)}</span>
+      </a>
+      {getChildren(parent.id).map(child => (
+        <a class="sidebar-board sidebar-subboard" href={boardLink(child.id)} aria-current={currentPath === boardLink(child.id) ? 'page' : undefined}>
+          - {child.name}<span>{count(child)}</span>
+        </a>
+      ))}
+    </div>
+  ))}
 
-  <div class="sidebar-group">
-    <a class="sidebar-group-title" href="/etc/">etc.</a>
-    {journalBoards.map(board => (
-      <a class="sidebar-board" href={boardLink(board.id)}>{board.name}<span>{count(board.id)}</span></a>
-    ))}
-  </div>
   {unclassified > 0 && (
     <div class="sidebar-group">
       <a class="sidebar-board" href="/board/uncategorized/">미분류 <span>{unclassified}</span></a>

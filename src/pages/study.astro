@@ -1,10 +1,8 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 import PostList from '../components/PostList.astro';
-import { boards } from '../config/boards';
-import { getPosts } from '../lib/posts';
-const ids = new Set(boards.filter(b => b.group === 'study').map(b => b.id));
-const posts = (await getPosts()).filter(p => p.data.category && ids.has(p.data.category));
+import { getPosts, isInGroup } from '../lib/posts';
+const posts = (await getPosts()).filter(post => isInGroup(post, 'study'));
 ---
 <SiteLayout title="STUDY" active="study">
   <div class="page-heading"><h1>STUDY</h1><span>{posts.length}개의 글</span></div>
