@@ -21,7 +21,7 @@ jobs:
       - name: Build Astro
         uses: withastro/action@v6
         with:
-          path: ./jieeunn.github.io
+          path: .
 
   deploy:
     needs: build
