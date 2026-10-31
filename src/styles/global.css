@@ -3,7 +3,7 @@
   --text: #202124;
   --muted: #747980;
   --line: #e5e7eb;
-  --accent: #365b86;
+  --accent:  #587b61;
   --page-bg: #f7f8fa;
   --white: #fff;
 }
@@ -92,3 +92,11 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .sidebar-group-title[aria-current="page"],
 .sidebar-subboard[aria-current="page"] { color: var(--accent); font-weight: 700; }
 .sidebar-subboard { padding-left: 22px; font-size: 13px; }
+.article-body mark {
+  color: #31583b;
+  background: #e7f1e7;
+  border-radius: 4px;
+  padding: 0.08em 0.28em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
