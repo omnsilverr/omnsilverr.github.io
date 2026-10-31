@@ -3,22 +3,8 @@ import { boards, getBoard, type Board, type BoardGroup } from '../config/boards'
 
 export type Post = CollectionEntry<'blog'>;
 
-// Astro 기본 예시 글을 게시판 목록에서 제외합니다.
-const starterPosts: Record<string, string> = {
-  'first-post': 'First post',
-  'second-post': 'Second post',
-  'third-post': 'Third post',
-  'markdown-style-guide': 'Markdown Style Guide',
-  'using-mdx': 'Using MDX',
-};
-
-export function isStarterPost(post: Post) {
-  return starterPosts[post.id] === post.data.title;
-}
-
 export async function getPosts(): Promise<Post[]> {
   return (await getCollection('blog'))
-    .filter((post) => !isStarterPost(post))
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 }
 
